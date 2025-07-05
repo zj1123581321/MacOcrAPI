@@ -118,7 +118,7 @@ if [ $? -eq 0 ]; then
     echo "  ./setup_autostart.sh"
     echo ""
     echo "API 文档："
-    echo "  http://localhost:8003/docs"
+    echo "  http://localhost:8004/docs"
     echo ""
     echo "请编辑 .env 文件以配置您的设置"
 else

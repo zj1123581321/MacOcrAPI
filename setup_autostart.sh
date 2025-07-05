@@ -36,9 +36,57 @@ chmod +x startup.sh
 # 创建 LaunchAgents 目录（如果不存在）
 mkdir -p "$LAUNCH_AGENTS_DIR"
 
-# 复制 plist 文件到 LaunchAgents 目录
-echo "复制 LaunchAgent 配置文件..."
-cp "$PLIST_FILE" "$LAUNCH_AGENTS_DIR/"
+# 动态生成 plist 文件内容
+echo "生成 LaunchAgent 配置文件..."
+cat > "$LAUNCH_AGENTS_DIR/$PLIST_FILE" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ocrmac.api</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>$CURRENT_DIR/startup.sh</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>$CURRENT_DIR</string>
+    
+    <key>StandardOutPath</key>
+    <string>$CURRENT_DIR/logs/ocrmac_api.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>$CURRENT_DIR/logs/ocrmac_api_error.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+    
+    <key>ProcessType</key>
+    <string>Background</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>$CURRENT_DIR/venv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>PYTHONPATH</key>
+        <string>$CURRENT_DIR:$CURRENT_DIR/src:$CURRENT_DIR/ocrmac-main</string>
+    </dict>
+    
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+    
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>
+EOF
+
+echo "✓ LaunchAgent 配置文件已生成: $LAUNCH_AGENTS_DIR/$PLIST_FILE"
 
 # 加载 LaunchAgent
 echo "加载 LaunchAgent..."
@@ -68,9 +116,9 @@ if launchctl list | grep -q "com.ocrmac.api"; then
     echo "  错误输出: tail -f $CURRENT_DIR/logs/ocrmac_api_error.log"
     echo ""
     echo "API 访问："
-    echo "  服务地址: http://localhost:8003"
-    echo "  API 文档: http://localhost:8003/docs"
-    echo "  健康检查: http://localhost:8003/health"
+    echo "  服务地址: http://localhost:8004"
+    echo "  API 文档: http://localhost:8004/docs"
+    echo "  健康检查: http://localhost:8004/health"
 else
     echo "✗ 服务启动失败"
     echo "请检查日志文件以获取更多信息："

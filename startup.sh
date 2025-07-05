@@ -3,6 +3,7 @@
 
 # 设置工作目录
 cd "$(dirname "$0")"
+SCRIPT_DIR="$PWD"
 
 # 创建日志目录
 mkdir -p logs
@@ -14,27 +15,38 @@ if [ -f ".env" ]; then
 fi
 
 # 设置 Python 路径
-export PYTHONPATH="$PWD:$PWD/src:$PWD/ocrmac-main:$PYTHONPATH"
+export PYTHONPATH="$SCRIPT_DIR:$SCRIPT_DIR/src:$SCRIPT_DIR/ocrmac-main:$PYTHONPATH"
+
+# 确定Python解释器路径
+if [ -d "venv" ]; then
+    echo "检测到虚拟环境，使用venv中的Python..."
+    PYTHON_BIN="$SCRIPT_DIR/venv/bin/python3"
+    PIP_BIN="$SCRIPT_DIR/venv/bin/pip3"
+    
+    # 检查虚拟环境是否有效
+    if [ -x "$PYTHON_BIN" ]; then
+        echo "✓ 虚拟环境Python路径: $PYTHON_BIN"
+    else
+        echo "✗ 虚拟环境损坏，请重新创建"
+        exit 1
+    fi
+else
+    echo "未找到虚拟环境，使用系统Python..."
+    PYTHON_BIN="python3"
+    PIP_BIN="pip3"
+fi
 
 # 检查 Python 版本
-PYTHON_VERSION=$(python3 --version 2>&1 | cut -d' ' -f2)
+PYTHON_VERSION=$($PYTHON_BIN --version 2>&1 | cut -d' ' -f2)
 echo "Python 版本: $PYTHON_VERSION"
-
-# 检查虚拟环境
-if [ -d "venv" ]; then
-    echo "激活虚拟环境..."
-    source venv/bin/activate
-    echo "虚拟环境已激活"
-else
-    echo "未找到虚拟环境，使用系统 Python"
-fi
+echo "Python 路径: $PYTHON_BIN"
 
 # 检查依赖
 echo "检查依赖..."
-python3 -c "import fastapi, uvicorn, Vision, objc, PIL" 2>/dev/null
+$PYTHON_BIN -c "import fastapi, uvicorn, Vision, objc, PIL" 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "缺少依赖，尝试安装..."
-    pip3 install -r requirements.txt
+    $PIP_BIN install -r requirements.txt
     if [ $? -ne 0 ]; then
         echo "依赖安装失败，退出"
         exit 1
@@ -52,4 +64,4 @@ echo "工作目录: $PWD"
 echo "=================================="
 
 # 启动 API 服务
-exec python3 main.py --host 0.0.0.0 --port 8003 --workers 4 --log-level INFO 
+exec $PYTHON_BIN main.py --host 0.0.0.0 --port 8004 --workers 20 --log-level INFO 

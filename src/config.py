@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     
     # 服务器配置
     host: str = "0.0.0.0"
-    port: int = 8003
+    port: int = 8004
     workers: int = 4
     
     # 安全配置

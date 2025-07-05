@@ -31,7 +31,7 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi/venv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>PYTHONPATH</key>
         <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/src:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/ocrmac-main</string>
     </dict>
