@@ -14,7 +14,7 @@ if [ -f ".env" ]; then
 fi
 
 # 设置 Python 路径
-export PYTHONPATH="$PWD:$PWD/ocrmac-main:$PYTHONPATH"
+export PYTHONPATH="$PWD:$PWD/src:$PWD/ocrmac-main:$PYTHONPATH"
 
 # 检查 Python 版本
 PYTHON_VERSION=$(python3 --version 2>&1 | cut -d' ' -f2)

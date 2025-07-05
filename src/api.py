@@ -16,15 +16,15 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from models import (
+from .models import (
     OCRRequest, 
     OCRResponse, 
     ErrorResponse, 
     HealthCheckResponse,
     OCRResult
 )
-from ocr_service import ocr_service
-from config import settings
+from .ocr_service import ocr_service
+from .config import settings
 
 # 配置日志
 logging.basicConfig(

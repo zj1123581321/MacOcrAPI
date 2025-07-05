@@ -33,7 +33,7 @@
         <key>PATH</key>
         <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>PYTHONPATH</key>
-        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/ocrmac-main</string>
+        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/src:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/ocrmac-main</string>
     </dict>
     
     <key>ThrottleInterval</key>

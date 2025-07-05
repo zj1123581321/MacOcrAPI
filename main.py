@@ -8,7 +8,7 @@ import logging
 import sys
 import os
 
-from config import settings
+from src.config import settings
 
 # 配置日志
 logging.basicConfig(
@@ -54,7 +54,7 @@ def main():
     
     try:
         uvicorn.run(
-            "api:app",
+            "src.api:app",
             host=args.host,
             port=args.port,
             workers=args.workers if not args.debug else 1,

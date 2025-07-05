@@ -14,11 +14,11 @@ import sys
 import os
 
 # 添加 ocrmac 库的路径
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'ocrmac-main'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'ocrmac-main'))
 
 from ocrmac.ocrmac import OCR, text_from_image, livetext_from_image, convert_coordinates_pil
-from models import OCRResult
-from config import settings
+from .models import OCRResult
+from .config import settings
 
 
 class OCRService:
