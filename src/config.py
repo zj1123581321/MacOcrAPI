@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     
     # 性能配置
     max_image_size: int = 10 * 1024 * 1024  # 10MB
+    max_image_width: int = 20000  # 最大图像宽度
+    max_image_height: int = 20000  # 最大图像高度
     request_timeout: int = 30  # 30秒
     
     class Config:

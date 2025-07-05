@@ -10,11 +10,7 @@ import time
 from typing import List, Optional, Tuple, Dict, Any
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
-import sys
-import os
 
-# 添加 ocrmac 库的路径
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'ocrmac-main'))
 
 from ocrmac.ocrmac import OCR, text_from_image, livetext_from_image, convert_coordinates_pil
 from .models import OCRResult
@@ -97,8 +93,8 @@ class OCRService:
             if image.size[0] < 10 or image.size[1] < 10:
                 raise ValueError(f"图像尺寸太小: {image.size}")
             
-            if image.size[0] > 10000 or image.size[1] > 10000:
-                raise ValueError(f"图像尺寸太大: {image.size}")
+            if image.size[0] > settings.max_image_width or image.size[1] > settings.max_image_height:
+                raise ValueError(f"图像尺寸太大: {image.size}，最大支持: {settings.max_image_width}x{settings.max_image_height}")
             
             # 转换为 RGB 模式（如果需要）
             if image.mode not in ['RGB', 'RGBA']:

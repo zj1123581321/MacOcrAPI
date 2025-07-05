@@ -116,9 +116,9 @@ if launchctl list | grep -q "com.ocrmac.api"; then
     echo "  错误输出: tail -f $CURRENT_DIR/logs/ocrmac_api_error.log"
     echo ""
     echo "API 访问："
-    echo "  服务地址: http://localhost:8004"
-    echo "  API 文档: http://localhost:8004/docs"
-    echo "  健康检查: http://localhost:8004/health"
+    echo "  服务地址: http://localhost:8015"
+    echo "  API 文档: http://localhost:8015/docs"
+    echo "  健康检查: http://localhost:8015/health"
 else
     echo "✗ 服务启动失败"
     echo "请检查日志文件以获取更多信息："

@@ -63,5 +63,8 @@ echo "PID: $$"
 echo "工作目录: $PWD"
 echo "=================================="
 
+# 设置默认端口（如果环境变量没有设置）
+PORT=${PORT:-8004}
+
 # 启动 API 服务
-exec $PYTHON_BIN main.py --host 0.0.0.0 --port 8004 --workers 20 --log-level INFO 
+exec $PYTHON_BIN main.py --host 0.0.0.0 --port $PORT --workers 20 --log-level INFO 
