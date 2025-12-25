@@ -45,7 +45,18 @@ class Settings(BaseSettings):
     max_image_width: int = 20000  # 最大图像宽度
     max_image_height: int = 20000  # 最大图像高度
     request_timeout: int = 30  # 30秒
-    
+
+    # LLM 排版配置
+    llm_base_url: Optional[str] = None  # OpenAI 兼容 API 地址
+    llm_api_key: Optional[str] = None  # API 密钥
+    llm_model: str = "gpt-4o-mini"  # 模型名称
+    llm_timeout: int = 30  # LLM 请求超时（秒）
+    llm_max_tokens: int = 4096  # 最大输出 token 数
+
+    def is_llm_configured(self) -> bool:
+        """检查 LLM 是否已配置"""
+        return bool(self.llm_base_url and self.llm_api_key)
+
     class Config:
         env_file = ".env"
         case_sensitive = False

@@ -17,14 +17,19 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .models import (
-    OCRRequest, 
-    OCRResponse, 
-    ErrorResponse, 
+    OCRRequest,
+    OCRResponse,
+    ErrorResponse,
     HealthCheckResponse,
-    OCRResult
+    OCRResult,
+    OCRFormatRequest,
+    OCRFormatResponse,
+    FormattedResult
 )
 from .ocr_service import ocr_service
 from .config import settings
+from .formatter_local import format_locally
+from .formatter_llm import format_with_llm
 
 # 配置日志
 logging.basicConfig(
@@ -239,12 +244,12 @@ async def predict_detailed(
 ):
     """
     详细 OCR 预测接口
-    
+
     返回包含详细信息的 OCR 结果
     """
     try:
         logger.info("开始处理详细 OCR 请求")
-        
+
         # 处理图像
         result = await ocr_service.process_image(
             image_base64=request.image_base64,
@@ -253,12 +258,67 @@ async def predict_detailed(
             confidence_threshold=request.confidence_threshold,
             framework=request.framework
         )
-        
+
         logger.info(f"详细 OCR 处理完成，返回 {len(result['results'])} 个结果")
-        
+
         # 返回详细结果
         return OCRResponse(**result)
-        
+
+    except ValueError as e:
+        logger.error(f"输入验证错误: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except RuntimeError as e:
+        logger.error(f"OCR 处理错误: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        logger.error(f"未知错误: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="服务器内部错误")
+
+
+@app.post("/predict-format", response_model=OCRFormatResponse)
+async def predict_format(
+    request: OCRFormatRequest,
+    token: str = Depends(verify_token)
+):
+    """
+    带排版功能的 OCR 预测接口
+
+    返回原始 OCR 结果 + 本地排版结果 + 可选的 LLM 排版结果
+    """
+    try:
+        logger.info(f"开始处理带排版的 OCR 请求，enable_llm_format={request.enable_llm_format}")
+
+        # 处理图像 OCR
+        result = await ocr_service.process_image(
+            image_base64=request.image_base64,
+            recognition_level=request.recognition_level,
+            language_preference=request.language_preference,
+            confidence_threshold=request.confidence_threshold,
+            framework=request.framework
+        )
+
+        ocr_results = result['results']
+        image_size = result['image_size']
+        processing_time = result['processing_time']
+
+        # 本地排版（始终执行）
+        local_format = format_locally(ocr_results, image_size)
+
+        # LLM 排版（可选）
+        llm_format = None
+        if request.enable_llm_format:
+            llm_format = await format_with_llm(ocr_results)
+
+        logger.info(f"带排版 OCR 处理完成，返回 {len(ocr_results)} 个结果")
+
+        return OCRFormatResponse(
+            results=ocr_results,
+            local_format=local_format,
+            llm_format=llm_format,
+            processing_time=processing_time,
+            image_size=image_size
+        )
+
     except ValueError as e:
         logger.error(f"输入验证错误: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
