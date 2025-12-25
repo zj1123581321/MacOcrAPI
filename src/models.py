@@ -77,15 +77,6 @@ class OCRResult(BaseModel):
     score: float = Field(..., description="置信度分数")
 
 
-class OCRResponse(BaseModel):
-    """OCR 响应模型"""
-    
-    results: List[OCRResult] = Field(..., description="OCR 结果列表")
-    processing_time: float = Field(..., description="处理时间（秒）")
-    image_size: Tuple[int, int] = Field(..., description="图像尺寸 (width, height)")
-    total_texts: int = Field(..., description="识别的文本总数")
-
-
 class ErrorResponse(BaseModel):
     """错误响应模型"""
     

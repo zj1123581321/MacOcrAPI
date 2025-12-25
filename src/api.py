@@ -18,7 +18,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .models import (
     OCRRequest,
-    OCRResponse,
     ErrorResponse,
     HealthCheckResponse,
     OCRResult,
@@ -226,44 +225,6 @@ async def predict(
         # 直接返回结果列表，符合示例格式
         return result['results']
         
-    except ValueError as e:
-        logger.error(f"输入验证错误: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except RuntimeError as e:
-        logger.error(f"OCR 处理错误: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-    except Exception as e:
-        logger.error(f"未知错误: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail="服务器内部错误")
-
-
-@app.post("/predict-detailed", response_model=OCRResponse)
-async def predict_detailed(
-    request: OCRRequest,
-    token: str = Depends(verify_token)
-):
-    """
-    详细 OCR 预测接口
-
-    返回包含详细信息的 OCR 结果
-    """
-    try:
-        logger.info("开始处理详细 OCR 请求")
-
-        # 处理图像
-        result = await ocr_service.process_image(
-            image_base64=request.image_base64,
-            recognition_level=request.recognition_level,
-            language_preference=request.language_preference,
-            confidence_threshold=request.confidence_threshold,
-            framework=request.framework
-        )
-
-        logger.info(f"详细 OCR 处理完成，返回 {len(result['results'])} 个结果")
-
-        # 返回详细结果
-        return OCRResponse(**result)
-
     except ValueError as e:
         logger.error(f"输入验证错误: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))

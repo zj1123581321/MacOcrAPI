@@ -124,7 +124,6 @@ LLM_TIMEOUT=30
 ## 📊 API 接口
 
 - `POST /predict` - OCR 识别（返回位置信息）
-- `POST /predict-detailed` - 详细识别结果
 - `POST /predict-format` - 带排版的 OCR 识别（返回原始结果 + Markdown 排版）
 - `GET /health` - 健康检查
 - `GET /stats` - 统计信息（需认证）

@@ -87,7 +87,7 @@ try:
     print('✓ 配置模块导入成功')
     
     # 测试数据模型
-    from models import OCRRequest, OCRResponse
+    from models import OCRRequest
     print('✓ 数据模型导入成功')
     
     print('✓ 所有模块都可以正常导入，安装成功！')
