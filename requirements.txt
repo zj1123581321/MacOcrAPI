@@ -4,7 +4,8 @@ uvicorn[standard]==0.24.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
 
-# OCR 相关 - 只需要这两个包，其他会自动安装
+# OCR 相关
+ocrmac==1.0.0
 pyobjc-framework-Vision>=11.1
 pillow>=10.0.0
 
@@ -12,6 +13,7 @@ pillow>=10.0.0
 psutil>=5.9.0
 
 # 日志和工具
+loguru>=0.7.0
 python-multipart>=0.0.6
 click>=8.0.0
 
