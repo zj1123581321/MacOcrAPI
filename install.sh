@@ -62,7 +62,7 @@ chmod +x startup.sh
 echo "设置启动脚本权限"
 
 # 更新 plist 文件中的路径
-sed -i.bak "s|/Users/zhanglixing/Dev/projects/250705_OcrMacApi|$INSTALL_DIR|g" com.ocrmac.api.plist
+sed -i.bak "s|/opt/ocrmac-api|$INSTALL_DIR|g" com.ocrmac.api.plist
 echo "更新 LaunchAgent 配置文件"
 
 # 测试安装

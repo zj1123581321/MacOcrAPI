@@ -7,17 +7,17 @@
     
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi/startup.sh</string>
+        <string>/opt/ocrmac-api/startup.sh</string>
     </array>
     
     <key>WorkingDirectory</key>
-    <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi</string>
+    <string>/opt/ocrmac-api</string>
     
     <key>StandardOutPath</key>
-    <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi/logs/ocrmac_api.log</string>
+    <string>/opt/ocrmac-api/logs/ocrmac_api.log</string>
     
     <key>StandardErrorPath</key>
-    <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi/logs/ocrmac_api_error.log</string>
+    <string>/opt/ocrmac-api/logs/ocrmac_api_error.log</string>
     
     <key>RunAtLoad</key>
     <true/>
@@ -31,9 +31,9 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi/venv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/opt/ocrmac-api/venv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>PYTHONPATH</key>
-        <string>/Users/zhanglixing/Dev/projects/250705_OcrMacApi:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/src:/Users/zhanglixing/Dev/projects/250705_OcrMacApi/ocrmac-main</string>
+        <string>/opt/ocrmac-api:/opt/ocrmac-api/src:/opt/ocrmac-api/ocrmac-main</string>
     </dict>
     
     <key>ThrottleInterval</key>
